@@ -1,0 +1,4 @@
+node_modules
+legacy/
+build/
+npm-debug.log
