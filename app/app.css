@@ -3,3 +3,14 @@
   height: 100%;
   font-family: 'PT Sans Narrow', sans-serif;
 }
+
+#tracking-text {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  align-self: center;
+  color: red;
+  z-index: 999999;
+  background-color: white;
+  padding: 10px
+}

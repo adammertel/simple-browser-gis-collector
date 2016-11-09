@@ -15,6 +15,8 @@ export default class MapWrapper extends React.Component {
   }
 
   render() {
+    console.log('map render')
+
     const position = [this.state.latitude, this.state.lng];
     let pos = this.props.position
     return (
@@ -47,6 +49,11 @@ export default class MapWrapper extends React.Component {
           </LayersControl.BaseLayer>
         </LayersControl>
         <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
+        {
+          this.props.points.map(function(point, pi) {
+            return (<Circle radius={10} key={pi} center={point.geometry.coordinates} fillColor={'black'} fillOpacity={1} weight={0} />)
+          })
+        }
       </Map>
     );
   }

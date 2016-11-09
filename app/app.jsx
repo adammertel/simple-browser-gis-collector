@@ -5,6 +5,11 @@ import Menu from './components/menu';
 
 require('./app.css');
 
+const EMTPYCOLLECTION = {
+  "type": "FeatureCollection",
+  "features": []
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +18,7 @@ export default class App extends React.Component {
         lat: 48.13,
         lng: 16.28
       },
+      tracking: false,
       zoom: 15
     };
   }
@@ -23,6 +29,8 @@ export default class App extends React.Component {
       timeout: 1500,
       maximumAge: 25000
     };
+
+    this._setData(EMTPYCOLLECTION)
     navigator.geolocation.watchPosition(this.success.bind(this), function(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     }, options);
@@ -44,28 +52,100 @@ export default class App extends React.Component {
   }
 
   addNewPosition (position) {
+    let self = this;
+    if (this.state.tracking) {
+      this.addTrackingPoint(position);
+    }
     this.setState({
-      position: {
-        lat: position.lat, lng: position.lng, acc: position.acc
-      }
+      position: position,
+      data: self._getData()
     })
   }
 
+  addTrackingPoint () {
+    console.log('new tracking point')
+  }
+
   startTracking () {
-    console.log('start tracking')
+    if (!this.state.tracking) {
+      let trackName = prompt('name of track');
+      console.log('start tracking')
+      this.setState({'tracking': true})
+
+    } else {
+      alert ('sry, we are tracking right now')
+    }
   }
+
   stopTracking () {
-    console.log('stop tracking')
+    if (this.state.tracking) {
+
+      console.log('stop tracking')
+      this.setState({'tracking': false})
+    } else {
+      alert ('sry, we are not tracking right now')
+    }
   }
+
   savePosition () {
-    console.log('save position')
+    let label = prompt('name of point');
+
+    let data = Object.assign({}, this._getData());
+    console.log(data)
+    data.features.push(
+      {
+        "type": "Feature",
+        "properties": {
+          label: label
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": this.thisCoords()
+        }
+      }
+    );
+    this._setData(data);
+
+    console.log('save position');
+    this.forceUpdate()
+  }
+
+  thisCoords () {
+    return [this.state.position.lat, this.state.position.lng]
+  }
+
+  _getData () {
+    return JSON.parse(localStorage.getItem('geodata'));
+  }
+
+  _setData (data) {
+    localStorage.setItem('geodata', JSON.stringify(data));
+  }
+
+  getPointsData () {
+    return this._getData().features.map(function(feature, f) {
+      if (feature.geometry.type == 'Point') {
+        return feature
+      }
+    })
   }
 
   render() {
     return (
       <div id="app">
-        <Menu onStartTracking={this.startTracking} onStopTracking={this.stopTracking} onSavePosition={this.savePosition} />
-        <MapWrapper position={this.state.position} />
+        {
+          this.state.tracking && <h3 id="tracking-text">TRACKING...</h3>
+        }
+        <Menu
+          onStartTracking={this.startTracking.bind(this)}
+          onStopTracking={this.stopTracking.bind(this)}
+          onSavePosition={this.savePosition.bind(this)}
+        />
+        <MapWrapper
+          data={this.state.data}
+          position={this.state.position}
+          points={this.getPointsData()}
+        />
         <Panel />
       </div>
     );
