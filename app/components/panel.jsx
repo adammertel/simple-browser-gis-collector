@@ -1,4 +1,5 @@
 import React from 'react';
+require('./panel.css');
 
 export default class Panel extends React.Component {
   constructor(props) {
@@ -7,7 +8,8 @@ export default class Panel extends React.Component {
 
   render() {
     return (
-      <h1>Panel</h1>
+      <div id="panel">
+      </div>
     );
   }
 }

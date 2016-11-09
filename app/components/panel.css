@@ -1,0 +1,10 @@
+#panel {
+  background-color: grey;
+  position: absolute;
+  top: 2%;
+  height: 96%;
+  width: 350px;
+  right: 2%;
+  z-index: 999999;
+  opacity: 0.92
+}

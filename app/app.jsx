@@ -1,9 +1,8 @@
 import React from 'react';
-import Map from './components/map';
-import Menu from './components/menu';
+import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
 
-require('./App.css');
+require('./app.css');
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,9 +11,8 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Menu />
-        <Map />
+      <div id="app">
+        <MapWrapper />
         <Panel />
       </div>
     );
