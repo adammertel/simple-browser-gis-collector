@@ -51,6 +51,7 @@ export default class MapWrapper extends React.Component {
         <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
         {
           this.props.points.map(function(point, pi) {
+            console.log();
             return (<Circle radius={10} key={pi} center={point.geometry.coordinates} fillColor={'black'} fillOpacity={1} weight={0} />)
           })
         }

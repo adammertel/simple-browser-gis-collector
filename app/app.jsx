@@ -31,46 +31,61 @@ export default class App extends React.Component {
     };
 
     this._setData(EMTPYCOLLECTION)
-    navigator.geolocation.watchPosition(this.success.bind(this), function(err) {
+    self = this;
+    navigator.geolocation.watchPosition(function(gl) {
+      self.positionChanged({
+          'time': gl.timestamp,
+          'acc': gl.coords.accuracy,
+          'alt': gl.coords.altitude,
+          'altacc': gl.coords.altitudeAccuracy,
+          'h': gl.coords.heading,
+          'lat': gl.coords.latitude,
+          'lng': gl.coords.longitude,
+          's': gl.coords.speed,
+        })
+    }, function(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     }, options);
-
   }
 
-  success (geolocation) {
-    let position = {
-      'time': geolocation.timestamp,
-      'acc': geolocation.coords.accuracy,
-      'alt': geolocation.coords.altitude,
-      'altacc': geolocation.coords.altitudeAccuracy,
-      'h': geolocation.coords.heading,
-      'lat': geolocation.coords.latitude,
-      'lng': geolocation.coords.longitude,
-      's': geolocation.coords.speed,
-    }
-    this.addNewPosition(position)
-  }
-
-  addNewPosition (position) {
+  positionChanged (position) {
     let self = this;
+    this.setState({
+      position: position
+    })
     if (this.state.tracking) {
       this.addTrackingPoint(position);
     }
-    this.setState({
-      position: position,
-      data: self._getData()
-    })
   }
 
-  addTrackingPoint () {
-    console.log('new tracking point')
+  addTrackingPoint (position) {
+    console.log(this.activeTrack())
+    this.activeTrack()[0].geometry.coordinates.push([this.thisCoords()])
+    this.forceUpdate()
   }
 
   startTracking () {
     if (!this.state.tracking) {
       let trackName = prompt('name of track');
       console.log('start tracking')
+
       this.setState({'tracking': true})
+      let data = this._clonedData();
+
+      data.features.push(
+        {
+          "type": "Feature",
+          "properties": {
+            label: trackName,
+            active: true
+          },
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [this.thisCoords()]
+          }
+        }
+      )
+      this._setData(data);
 
     } else {
       alert ('sry, we are tracking right now')
@@ -82,21 +97,28 @@ export default class App extends React.Component {
 
       console.log('stop tracking')
       this.setState({'tracking': false})
+      this.activeTrack().properties.active = false
     } else {
       alert ('sry, we are not tracking right now')
     }
+    this.forceUpdate()
+  }
+
+  activeTrack () {
+    return this.getTracksData().map(function(track, ti){
+      if (track.properties.active) {return track}
+    })
   }
 
   savePosition () {
-    let label = prompt('name of point');
+    let pointLabel = prompt('name of point');
 
-    let data = Object.assign({}, this._getData());
-    console.log(data)
+    let data = this._clonedData();
     data.features.push(
       {
         "type": "Feature",
         "properties": {
-          label: label
+          label: pointLabel
         },
         "geometry": {
           "type": "Point",
@@ -106,8 +128,12 @@ export default class App extends React.Component {
     );
     this._setData(data);
 
-    console.log('save position');
+    console.log('position saved');
     this.forceUpdate()
+  }
+
+  _clonedData () {
+    return Object.assign({}, this._getData());
   }
 
   thisCoords () {
@@ -123,10 +149,14 @@ export default class App extends React.Component {
   }
 
   getPointsData () {
-    return this._getData().features.map(function(feature, f) {
-      if (feature.geometry.type == 'Point') {
-        return feature
-      }
+    return this._getData().features.filter(function(feature, f) {
+      feature.geometry.type == 'Point'
+    })
+  }
+
+  getTracksData () {
+    return this._getData().features.filter(function(feature, f) {
+      feature.geometry.type == 'LineString'
     })
   }
 
