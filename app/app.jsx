@@ -3,6 +3,7 @@ import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
 
 require('./app.css');
+require('./main.css');
 
 const EMTPYCOLLECTION = {
   "type": "FeatureCollection",
@@ -20,6 +21,24 @@ export default class App extends React.Component {
       tracking: false,
       zoom: 15
     };
+  }
+
+  randomPosition () {
+    console.log('random')
+    let self = this;
+    this.positionChanged({
+      'time': '',
+      'acc': 10,
+      'alt': 200,
+      'altacc': 20,
+      'h': 'blabla',
+      'lat': this.state.position.lat + (0.5 - Math.random())/100,
+      'lng': this.state.position.lng + (0.5 - Math.random())/100,
+      's': 0,
+    })
+    window.setTimeout(function() {
+      self.randomPosition()
+    }, 3000 )
   }
 
   componentDidMount() {
@@ -45,6 +64,11 @@ export default class App extends React.Component {
     }, function(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     }, options);
+
+    //testing
+    window.setTimeout(function() {
+      self.randomPosition()
+    }, 2000)
   }
 
   positionChanged (position) {
@@ -53,53 +77,64 @@ export default class App extends React.Component {
       position: position
     })
     if (this.state.tracking) {
-      this.addTrackingPoint(position);
+      this.addTrackingPoint();
     }
   }
 
-  addTrackingPoint (position) {
-    this.activeTrack().geometry.coordinates.push([this.thisCoords()])
-    this.forceUpdate()
+  addTrackingPoint () {
+    let self = this;
+    let data = this._clonedData();
+    data.features.map(function (feature, fi) {
+      if (feature.properties.active) {
+        feature.geometry.coordinates.push(self.thisCoords())
+      }
+    })
+    this._setData(data);
+  }
+
+  onTracking () {
+    if (!this.state.tracking) {
+      this.startTracking();
+    } else {
+      this.stopTracking();
+    }
   }
 
   startTracking () {
-    if (!this.state.tracking) {
-      let trackName = prompt('name of track');
-      console.log('start tracking')
+    let trackName = prompt('name of track');
+    console.log('start tracking')
 
-      this.setState({'tracking': true})
-      let data = this._clonedData();
+    this.setState({'tracking': true})
+    let data = this._clonedData();
 
-      data.features.push(
-        {
-          "type": "Feature",
-          "properties": {
-            label: trackName,
-            active: true
-          },
-          "geometry": {
-            "type": "LineString",
-            "coordinates": [this.thisCoords()]
-          }
+    data.features.push(
+      {
+        "type": "Feature",
+        "properties": {
+          label: trackName,
+          active: true
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [this.thisCoords()]
         }
-      )
-      this._setData(data);
-
-    } else {
-      alert ('sry, we are tracking right now')
-    }
+      }
+    )
+    this._setData(data);
   }
 
   stopTracking () {
-    if (this.state.tracking) {
+    console.log('stop tracking')
+    this.setState({'tracking': false})
 
-      console.log('stop tracking')
-      this.setState({'tracking': false})
-      this.activeTrack().properties.active = false
-    } else {
-      alert ('sry, we are not tracking right now')
-    }
-    this.forceUpdate()
+    let self = this;
+    let data = this._clonedData();
+    data.features.map(function (feature, fi) {
+      if (feature.properties.active) {
+        feature.properties.active = false;
+      }
+    })
+    this._setData(data);
   }
 
   activeTrack () {
@@ -127,7 +162,6 @@ export default class App extends React.Component {
     this._setData(data);
 
     console.log('position saved');
-    this.forceUpdate()
   }
 
   _clonedData () {
@@ -144,31 +178,34 @@ export default class App extends React.Component {
 
   _setData (data) {
     localStorage.setItem('geodata', JSON.stringify(data));
+    this.forceUpdate();
   }
 
+
   getPointsData () {
+    if (!this._getData()){
+      return []
+    }
     return this._getData().features.filter(function(feature, f) {
       return feature.geometry.type == 'Point'
     })
   }
 
   getTracksData () {
+    if (!this._getData()){
+      return []
+    }
     return this._getData().features.filter(function(feature, f) {
       return feature.geometry.type == 'LineString'
     })
   }
 
   savePoints () {
-    console.log('save points');
-
     this.download('points.json', JSON.stringify(this.geometryCollection(this.getPointsData())));
   }
 
   saveTrack () {
-    console.log('save tracks');
-
     this.download('points.json', JSON.stringify(this.geometryCollection(this.getTracksData())));
-
   }
 
   download (filename, text) {
@@ -212,8 +249,8 @@ export default class App extends React.Component {
           position={this.state.position}
           points={pointsData}
           tracks={tracksData}
-          onStartTracking={this.startTracking.bind(this)}
-          onStopTracking={this.stopTracking.bind(this)}
+          onTracking={this.onTracking.bind(this)}
+          tracking={this.state.tracking}
           onAddPosition={this.addPosition.bind(this)}
           onSavePoints={this.savePoints.bind(this)}
           onSaveTracks={this.saveTrack.bind(this)}

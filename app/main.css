@@ -1,0 +1,21 @@
+.big-btn {
+    padding: 10px;
+    margin-right: 4px;
+    font-size: 15px;
+    border: 0px solid;
+    color: white;
+    font-weight: bold;
+    background-color: blue;
+    font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.sm-btn {
+    padding: 10px;
+    margin: 4px;
+    font-size: 20px;
+    border: 0px solid;
+    color: white;
+    font-weight: bold;
+    background-color: blue;
+    font-family: 'PT Sans Narrow', sans-serif;
+}

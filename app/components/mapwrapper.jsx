@@ -48,7 +48,7 @@ export default class MapWrapper extends React.Component {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
-        <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
+        <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} weight={1} />
         {
           this.props.points.map(function(point, pi) {
             return (<Circle radius={10} key={'p' + pi} center={point.geometry.coordinates} fillColor={'black'} fillOpacity={1} weight={0} />)
@@ -56,7 +56,8 @@ export default class MapWrapper extends React.Component {
         }
         {
           this.props.tracks.map(function(track, ti) {
-            return (<Polyline key={'t' + ti} positions={track.geometry.coordinates} />)
+            console.log(track.geometry.coordinates);
+            return (<Polyline key={'t' + ti} positions={track.geometry.coordinates} color={'black'}/>)
           })
         }
       </Map>

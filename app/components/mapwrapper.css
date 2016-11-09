@@ -1,9 +1,15 @@
 #mapwrapper {
-  width: 100%;
+  width: 60%;
   height: 100%
 }
 
 .leaflet-container {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 60%;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 0px
 }

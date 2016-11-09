@@ -1,11 +1,11 @@
 #panel {
   background-color: grey;
   position: absolute;
-  top: 2%;
-  height: 94%;
-  width: 450px;
-  right: 2%;
-  z-index: 999999;
+  height: 100%;
+  width: 38%;
+  top: 0px;
+  left: 60%;
+  z-index: 9999;
   opacity: 0.92;
-  padding: 10px;
+  padding-left: 2%;
 }
