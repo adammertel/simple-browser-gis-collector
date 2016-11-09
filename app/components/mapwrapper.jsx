@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, CircleMarker, Popup, TileLayer, LayersControl } from 'react-leaflet';
+import { Map, Circle, Popup, TileLayer, LayersControl } from 'react-leaflet';
 
 require('./mapwrapper.css');
 
@@ -46,7 +46,7 @@ export default class MapWrapper extends React.Component {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
-        <CircleMarker radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
+        <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
       </Map>
     );
   }

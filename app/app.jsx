@@ -1,6 +1,7 @@
 import React from 'react';
 import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
+import Menu from './components/menu';
 
 require('./app.css');
 
@@ -50,9 +51,20 @@ export default class App extends React.Component {
     })
   }
 
+  startTracking () {
+    console.log('start tracking')
+  }
+  stopTracking () {
+    console.log('stop tracking')
+  }
+  savePosition () {
+    console.log('save position')
+  }
+
   render() {
     return (
       <div id="app">
+        <Menu onStartTracking={this.startTracking} onStopTracking={this.stopTracking} onSavePosition={this.savePosition} />
         <MapWrapper position={this.state.position} />
         <Panel />
       </div>

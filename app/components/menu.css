@@ -1,0 +1,19 @@
+#menu {
+  position: absolute;
+  top: 2%;
+  right: 400px;
+  z-index: 999999;
+  opacity: 0.92
+}
+
+button {
+  display: block;
+  padding: 10px;
+  margin: 4px;
+  font-size: 20px;
+  border: 0px solid;
+  color: white;
+  font-weight: bold;
+  background-color: blue;
+  font-family: 'PT Sans Narrow', sans-serif;
+}
