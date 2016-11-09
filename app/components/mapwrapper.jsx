@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, Marker, Popup, TileLayer, LayersControl } from 'react-leaflet';
+import { Map, CircleMarker, Popup, TileLayer, LayersControl } from 'react-leaflet';
 
 require('./mapwrapper.css');
 
@@ -15,9 +15,10 @@ export default class MapWrapper extends React.Component {
   }
 
   render() {
-    const position = [this.state.lat, this.state.lng];
+    const position = [this.state.latitude, this.state.lng];
+    let pos = this.props.position
     return (
-      <Map center={position} zoom={this.state.zoom}>
+      <Map center={[pos.lat, pos.lng]} zoom={this.state.zoom}>
         <LayersControl position='bottomleft'>
           <LayersControl.BaseLayer name='OpenStreetMap' checked={true}>
             <TileLayer
@@ -45,6 +46,7 @@ export default class MapWrapper extends React.Component {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
+        <CircleMarker radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'red'} />
       </Map>
     );
   }
