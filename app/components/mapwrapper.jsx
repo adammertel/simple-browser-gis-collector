@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, Circle, Popup, TileLayer, LayersControl } from 'react-leaflet';
+import { Map, Circle, Popup, TileLayer, LayersControl, Polyline} from 'react-leaflet';
 
 require('./mapwrapper.css');
 
@@ -56,7 +56,7 @@ export default class MapWrapper extends React.Component {
         }
         {
           this.props.tracks.map(function(track, ti) {
-            return (<Polyline radius={10} key={'t' + ti} positions={point.geometry.coordinates} />)
+            return (<Polyline key={'t' + ti} positions={track.geometry.coordinates} />)
           })
         }
       </Map>

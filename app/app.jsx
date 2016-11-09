@@ -1,7 +1,6 @@
 import React from 'react';
 import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
-import Menu from './components/menu';
 
 require('./app.css');
 
@@ -59,8 +58,7 @@ export default class App extends React.Component {
   }
 
   addTrackingPoint (position) {
-    console.log(this.activeTrack())
-    this.activeTrack()[0].geometry.coordinates.push([this.thisCoords()])
+    this.activeTrack().geometry.coordinates.push([this.thisCoords()])
     this.forceUpdate()
   }
 
@@ -106,11 +104,11 @@ export default class App extends React.Component {
 
   activeTrack () {
     return this.getTracksData().filter(function(track, ti){
-      track.properties.active
-    })
+      return track.properties.active == true
+    })[0]
   }
 
-  savePosition () {
+  addPosition () {
     let pointLabel = prompt('name of point');
 
     let data = this._clonedData();
@@ -150,14 +148,50 @@ export default class App extends React.Component {
 
   getPointsData () {
     return this._getData().features.filter(function(feature, f) {
-      feature.geometry.type == 'Point'
+      return feature.geometry.type == 'Point'
     })
   }
 
   getTracksData () {
     return this._getData().features.filter(function(feature, f) {
-      feature.geometry.type == 'LineString'
+      return feature.geometry.type == 'LineString'
     })
+  }
+
+  savePoints () {
+    console.log('save points');
+
+    this.download('points.json', JSON.stringify(this.geometryCollection(this.getPointsData())));
+  }
+
+  saveTrack () {
+    console.log('save tracks');
+
+    this.download('points.json', JSON.stringify(this.geometryCollection(this.getTracksData())));
+
+  }
+
+  download (filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+  }
+
+  geometryCollection (data) {
+    var newCollection = Object.assign({}, EMTPYCOLLECTION);
+    data.map (function(feature, di) {
+      newCollection.features.push(feature)
+    });
+    return newCollection
   }
 
   render() {
@@ -169,11 +203,6 @@ export default class App extends React.Component {
         {
           this.state.tracking && <h3 id="tracking-text">TRACKING...</h3>
         }
-        <Menu
-          onStartTracking={this.startTracking.bind(this)}
-          onStopTracking={this.stopTracking.bind(this)}
-          onSavePosition={this.savePosition.bind(this)}
-        />
         <MapWrapper
           position={this.state.position}
           points={pointsData}
@@ -183,6 +212,11 @@ export default class App extends React.Component {
           position={this.state.position}
           points={pointsData}
           tracks={tracksData}
+          onStartTracking={this.startTracking.bind(this)}
+          onStopTracking={this.stopTracking.bind(this)}
+          onAddPosition={this.addPosition.bind(this)}
+          onSavePoints={this.savePoints.bind(this)}
+          onSaveTracks={this.saveTrack.bind(this)}
         />
       </div>
     );

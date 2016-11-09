@@ -2,9 +2,10 @@
   background-color: grey;
   position: absolute;
   top: 2%;
-  height: 96%;
-  width: 350px;
+  height: 94%;
+  width: 450px;
   right: 2%;
   z-index: 999999;
-  opacity: 0.92
+  opacity: 0.92;
+  padding: 10px;
 }
