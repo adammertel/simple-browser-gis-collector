@@ -105,8 +105,8 @@ export default class App extends React.Component {
   }
 
   activeTrack () {
-    return this.getTracksData().map(function(track, ti){
-      if (track.properties.active) {return track}
+    return this.getTracksData().filter(function(track, ti){
+      track.properties.active
     })
   }
 
@@ -161,6 +161,9 @@ export default class App extends React.Component {
   }
 
   render() {
+    let pointsData = this.getPointsData();
+    let tracksData = this.getTracksData();
+
     return (
       <div id="app">
         {
@@ -172,11 +175,15 @@ export default class App extends React.Component {
           onSavePosition={this.savePosition.bind(this)}
         />
         <MapWrapper
-          data={this.state.data}
           position={this.state.position}
-          points={this.getPointsData()}
+          points={pointsData}
+          tracks={tracksData}
         />
-        <Panel />
+        <Panel
+          position={this.state.position}
+          points={pointsData}
+          tracks={tracksData}
+        />
       </div>
     );
   }
