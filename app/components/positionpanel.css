@@ -1,0 +1,23 @@
+#position-panel {
+  background-color: white;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  z-index: 9999;
+  opacity: 0.92;
+  padding: 2%;
+  font-size: 12px;
+  max-width: 250px
+}
+
+#position-panel h4 {
+  text-align: right
+}
+
+#position-panel dt {
+  width: 50px
+}
+
+#position-panel dd {
+  margin-left:70px
+}

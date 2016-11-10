@@ -1,17 +1,49 @@
 #panel {
   background-color: grey;
   position: absolute;
-  height: 97%;
-  width: 38%;
+  width: 90%;
+  height: 150px;
   top: 0px;
-  left: 60%;
+  left: 0px;
   z-index: 9999;
   opacity: 0.92;
-  padding-left: 2%;
-  padding-top: 2%;
+  padding: 2%;
+  margin: 2%;
+  font-size: 12px;
 }
 
-#actual-position p{
-  margin-top: 0px;
-  margin-bottom: 2px
+.panel-column {
+  display: inline-table;
+  width: 30%;
+}
+
+.table-wrapper {
+  overflow-y: scroll;
+  height: 100px;
+  width: 77%;
+}
+
+#panel h2 {
+  margin-top: 0px
+}
+
+#panel th {
+  border-bottom: 1px solid black
+}
+
+
+#panel p {
+  margin: 0px;
+}
+
+#online-text {
+  color: white
+}
+
+#online-text.online {
+  text-shadow: -3px 0 green, 0 3px green, 3px 0 green, 0 -3px green
+}
+
+#online-text.offline {
+  text-shadow: -3px 0 red, 0 3px red, 3px 0 red, 0 -3px red
 }

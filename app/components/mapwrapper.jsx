@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, Circle, Popup, TileLayer, LayersControl, Polyline} from 'react-leaflet';
+import { Map, Circle, Popup, TileLayer, LayersControl, ZoomControl, Polyline} from 'react-leaflet';
 
 require('./mapwrapper.css');
 
@@ -20,7 +20,8 @@ export default class MapWrapper extends React.Component {
     let pos = this.props.position
     return (
       <Map center={[pos.lat, pos.lng]} zoom={this.state.zoom}>
-        <LayersControl position='topleft'>
+        <ZoomControl position='bottomleft' />
+        <LayersControl position='bottomleft'>
           <LayersControl.BaseLayer name='OpenStreetMap' >
             <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

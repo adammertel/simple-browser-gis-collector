@@ -1,6 +1,7 @@
 import React from 'react';
 import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
+import PositionPanel from './components/positionpanel';
 import togpx from 'togpx'
 
 require('./app.css');
@@ -272,11 +273,6 @@ export default class App extends React.Component {
     return (
       <div id="app">
         {
-          this.state.online ?
-          <h3 id="online-text" className="online">ONLINE</h3> :
-          <h3 id="online-text" className="offline">OFFLINE</h3>
-        }
-        {
           this.state.tracking && <h3 id="tracking-text">TRACKING...</h3>
         }
         <MapWrapper
@@ -285,6 +281,7 @@ export default class App extends React.Component {
           tracks={tracksData}
         />
         <Panel
+          online={this.state.online}
           position={this.state.position}
           points={pointsData}
           tracks={tracksData}
@@ -296,6 +293,9 @@ export default class App extends React.Component {
           onMailTracks={this.mailTracks.bind(this)}
           onMailPoints={this.mailPoints.bind(this)}
           onClearStorage={this.clearStorage.bind(this)}
+        />
+        <PositionPanel
+          position={this.state.position}
         />
       </div>
     );
