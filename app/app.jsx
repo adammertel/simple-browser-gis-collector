@@ -5,7 +5,7 @@ import Panel from './components/panel';
 require('./app.css');
 require('./main.css');
 
-const EMTPYCOLLECTION = {
+const EMPTYCOLLECTION = {
   "type": "FeatureCollection",
   "features": []
 }
@@ -19,14 +19,12 @@ export default class App extends React.Component {
         lng: 16.28
       },
       tracking: false,
-      zoom: 15,
       online: true
     };
   }
 
   onlineCheck () {
     let self = this;
-    console.log(navigator.onLine)
     if (navigator.onLine != this.state.online) {
       this.setState({'online': navigator.onLine});
     }
@@ -36,7 +34,7 @@ export default class App extends React.Component {
   }
 
   randomPosition () {
-    console.log('random')
+    //console.log('random')
     let self = this;
     this.positionChanged({
       'time': '',
@@ -44,13 +42,13 @@ export default class App extends React.Component {
       'alt': 200,
       'altacc': 20,
       'h': 'blabla',
-      'lat': this.state.position.lat + (0.5 - Math.random())/100,
-      'lng': this.state.position.lng + (0.5 - Math.random())/100,
+      'lat': this.state.position.lat + (0.5 - Math.random())/1000,
+      'lng': this.state.position.lng + (0.5 - Math.random())/1000,
       's': 0,
     })
     window.setTimeout(function() {
       self.randomPosition()
-    }, 3000 )
+    }, 1500 )
   }
 
   componentDidMount() {
@@ -60,7 +58,7 @@ export default class App extends React.Component {
       maximumAge: 25000
     };
 
-    this._setData(EMTPYCOLLECTION)
+    this._setData(EMPTYCOLLECTION)
     self = this;
     navigator.geolocation.watchPosition(function(gl) {
       self.positionChanged({
@@ -78,7 +76,7 @@ export default class App extends React.Component {
     }, options);
 
     //testing
-    this.randomPosition()
+    //this.randomPosition()
     this.onlineCheck()
   }
 
@@ -215,8 +213,8 @@ export default class App extends React.Component {
     this.download('points.json', JSON.stringify(this.geometryCollection(this.getPointsData())));
   }
 
-  saveTrack () {
-    this.download('points.json', JSON.stringify(this.geometryCollection(this.getTracksData())));
+  saveTracks () {
+    this.download('tracks.json', JSON.stringify(this.geometryCollection(this.getTracksData())));
   }
 
   download (filename, text) {
@@ -234,8 +232,21 @@ export default class App extends React.Component {
     }
   }
 
+  mailPoints () {
+    this.mailTo(JSON.stringify(this.geometryCollection(this.getPointsData())));
+  }
+
+  mailTracks () {
+    this.mailTo(JSON.stringify(this.geometryCollection(this.getTracksData())));
+  }
+
+  mailTo (text) {
+    console.log(text)
+    window.open('mailto:test@example.com?subject=freshnewdata&body=' + text);
+  }
+
   geometryCollection (data) {
-    var newCollection = Object.assign({}, EMTPYCOLLECTION);
+    var newCollection = Object.assign({}, EMPTYCOLLECTION);
     data.map (function(feature, di) {
       newCollection.features.push(feature)
     });
@@ -269,7 +280,9 @@ export default class App extends React.Component {
           tracking={this.state.tracking}
           onAddPosition={this.addPosition.bind(this)}
           onSavePoints={this.savePoints.bind(this)}
-          onSaveTracks={this.saveTrack.bind(this)}
+          onSaveTracks={this.saveTracks.bind(this)}
+          onMailTracks={this.mailTracks.bind(this)}
+          onMailPoints={this.mailPoints.bind(this)}
         />
       </div>
     );

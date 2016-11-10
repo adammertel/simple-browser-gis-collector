@@ -17,8 +17,9 @@ export default class Panel extends React.Component {
         <h3> POINTS </h3>
         <button className="big-btn" id="add-point-btn" onClick={this.props.onAddPosition} >add new point</button>
         <button className="big-btn" id="save-points-btn" onClick={this.props.onSavePoints}>save all</button>
+        <button className="big-btn" id="mail-points-btn" onClick={this.props.onMailPoints}>mail all</button>
         <table>
-          <thead><tr><th>no</th><th>name</th><th>position</th><th></th><th></th></tr></thead>
+          <thead><tr><th>no</th><th>name</th><th>position</th><th></th></tr></thead>
           <tbody>
           {
             this.props.points.map(function(point, pi) {
@@ -27,11 +28,7 @@ export default class Panel extends React.Component {
                 <tr key={pi}>
                   <td>{pi}</td>
                   <td>{point.properties.label}</td>
-                  <td>{coordLabel}</td>
-                  <td><button className="sm-btn">save</button></td>
-                  <td><button className="sm-btn">del</button></td>
-                </tr>
-              )
+                  <td>{coordLabel}</td></tr>)
             })
           }
           </tbody>
@@ -40,8 +37,9 @@ export default class Panel extends React.Component {
         <h3> TRACKS </h3>
         <button className="big-btn" id="tracking-btn" onClick={this.props.onTracking} >{trackingText}</button>
         <button className="big-btn" id="save-tracks-btn" onClick={this.props.onSaveTracks}>save all</button>
+        <button className="big-btn" id="mail-tracks-btn" onClick={this.props.onMailTracks}>mail all</button>
         <table>
-          <thead><tr><th>no</th><th>name</th><th>no vertices</th><th></th><th></th></tr></thead>
+          <thead><tr><th>no</th><th>name</th><th>no vertices</th></tr></thead>
           <tbody>
           {
             this.props.tracks.map(function(track, ti) {
@@ -50,8 +48,6 @@ export default class Panel extends React.Component {
                   <td>{ti}</td>
                   <td>{track.properties.label}</td>
                   <td>{track.geometry.coordinates.length}</td>
-                  <td><button className="sm-btn">save</button></td>
-                  <td><button className="sm-btn">del</button></td>
                 </tr>
               )
             })
