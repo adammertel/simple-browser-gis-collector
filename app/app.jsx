@@ -19,8 +19,20 @@ export default class App extends React.Component {
         lng: 16.28
       },
       tracking: false,
-      zoom: 15
+      zoom: 15,
+      online: true
     };
+  }
+
+  onlineCheck () {
+    let self = this;
+    console.log(navigator.onLine)
+    if (navigator.onLine != this.state.online) {
+      this.setState({'online': navigator.onLine});
+    }
+    window.setTimeout(function() {
+      self.onlineCheck()
+    }, 500)
   }
 
   randomPosition () {
@@ -28,7 +40,7 @@ export default class App extends React.Component {
     let self = this;
     this.positionChanged({
       'time': '',
-      'acc': 10,
+      'acc': 30,
       'alt': 200,
       'altacc': 20,
       'h': 'blabla',
@@ -66,9 +78,8 @@ export default class App extends React.Component {
     }, options);
 
     //testing
-    window.setTimeout(function() {
-      self.randomPosition()
-    }, 2000)
+    this.randomPosition()
+    this.onlineCheck()
   }
 
   positionChanged (position) {
@@ -237,6 +248,11 @@ export default class App extends React.Component {
 
     return (
       <div id="app">
+        {
+          this.state.online ?
+          <h3 id="online-text" className="online">ONLINE</h3> :
+          <h3 id="online-text" className="offline">OFFLINE</h3>
+        }
         {
           this.state.tracking && <h3 id="tracking-text">TRACKING...</h3>
         }

@@ -16,3 +16,23 @@
   padding: 10px;
   text-align: center;
 }
+
+#online-text {
+  position: absolute;
+  top: 0px;
+  left: 0%;
+  width: 60%;
+  align-self: center;
+  color: white;
+  z-index: 999999;
+  padding: 10px;
+  text-align: center;
+}
+
+#online-text.online {
+  text-shadow: -3px 0 green, 0 3px green, 3px 0 green, 0 -3px green
+}
+
+#online-text.offline {
+  text-shadow: -3px 0 red, 0 3px red, 3px 0 red, 0 -3px red
+}
