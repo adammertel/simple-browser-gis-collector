@@ -14,6 +14,7 @@ export default class Panel extends React.Component {
 
     return (
       <div id="panel">
+        <button className="big-btn" id="clear-storage-btn" onClick={this.props.onClearStorage}>clear storage</button>
         <h3> POINTS </h3>
         <button className="big-btn" id="add-point-btn" onClick={this.props.onAddPosition} >add new point</button>
         <button className="big-btn" id="save-points-btn" onClick={this.props.onSavePoints}>save all</button>

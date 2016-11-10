@@ -58,7 +58,10 @@ export default class App extends React.Component {
       maximumAge: 25000
     };
 
-    this._setData(EMPTYCOLLECTION)
+    if (!this._getData()) {
+      this._setData(EMPTYCOLLECTION)
+    }
+
     self = this;
     navigator.geolocation.watchPosition(function(gl) {
       self.positionChanged({
@@ -78,6 +81,11 @@ export default class App extends React.Component {
     //testing
     //this.randomPosition()
     this.onlineCheck()
+  }
+
+  clearStorage () {
+    this._setData(EMPTYCOLLECTION);
+    this.forceUpdate();
   }
 
   positionChanged (position) {
@@ -283,6 +291,7 @@ export default class App extends React.Component {
           onSaveTracks={this.saveTracks.bind(this)}
           onMailTracks={this.mailTracks.bind(this)}
           onMailPoints={this.mailPoints.bind(this)}
+          onClearStorage={this.clearStorage.bind(this)}
         />
       </div>
     );
