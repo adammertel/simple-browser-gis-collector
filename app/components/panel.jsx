@@ -28,7 +28,6 @@ export default class Panel extends React.Component {
         </div>
         <button className="big-btn" id="add-point-btn" onClick={this.props.onAddPosition} >add new point</button>
         <button className="big-btn" id="save-points-btn" onClick={this.props.onSavePoints}>save all</button>
-        <button className="big-btn" id="mail-points-btn" onClick={this.props.onMailPoints}>mail all</button>
         <table>
           <thead><tr><th>no</th><th>name</th><th>position</th><th></th></tr></thead>
           <tbody>
@@ -48,7 +47,6 @@ export default class Panel extends React.Component {
         <h3> TRACKS </h3>
         <button className="big-btn" id="tracking-btn" onClick={this.props.onTracking} >{trackingText}</button>
         <button className="big-btn" id="save-tracks-btn" onClick={this.props.onSaveTracks}>save all</button>
-        <button className="big-btn" id="mail-tracks-btn" onClick={this.props.onMailTracks}>mail all</button>
         <table>
           <thead><tr><th>no</th><th>name</th><th>no vertices</th></tr></thead>
           <tbody>

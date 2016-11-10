@@ -16,7 +16,8 @@
     "leaflet-react": "^3.0.5",
     "react": "15.x",
     "react-dom": "15.x",
-    "react-leaflet": "^0.12.3"
+    "react-leaflet": "^0.12.3",
+    "togpx": "^0.5.3"
   },
   "devDependencies": {
     "babel-core": "6.x",

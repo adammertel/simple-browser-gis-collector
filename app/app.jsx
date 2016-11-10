@@ -1,6 +1,7 @@
 import React from 'react';
 import MapWrapper from './components/mapwrapper';
 import Panel from './components/panel';
+import togpx from 'togpx'
 
 require('./app.css');
 require('./main.css');
@@ -79,12 +80,14 @@ export default class App extends React.Component {
     }, options);
 
     //testing
-    //this.randomPosition()
+    this.randomPosition()
     this.onlineCheck()
   }
 
   clearStorage () {
+    console.log('clearing storage')
     this._setData(EMPTYCOLLECTION);
+    this.setState({'tracking': false})
     this.forceUpdate();
   }
 
@@ -218,14 +221,15 @@ export default class App extends React.Component {
   }
 
   savePoints () {
-    this.download('points.json', JSON.stringify(this.geometryCollection(this.getPointsData())));
+    this.download('points.gpx', togpx(this.geometryCollection(this.getPointsData())));
   }
 
   saveTracks () {
-    this.download('tracks.json', JSON.stringify(this.geometryCollection(this.getTracksData())));
+    this.download('tracks.gpx', JSON.stringify(togpx(this.geometryCollection(this.getTracksData()))));
   }
 
   download (filename, text) {
+    console.log(text)
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     pom.setAttribute('download', filename);
