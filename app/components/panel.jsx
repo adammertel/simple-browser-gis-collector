@@ -11,11 +11,21 @@ export default class Panel extends React.Component {
     if (this.props.tracking) {
       trackingText = 'stop tracking';
     }
+    let position = this.props.position;
+    let time = new Date(position.time);
 
     return (
       <div id="panel">
         <button className="big-btn" id="clear-storage-btn" onClick={this.props.onClearStorage}>clear storage</button>
-        <h3> POINTS </h3>
+        <h3> ACTUAL POSITION </h3>
+        <div id="actual-position">
+          <p><b>coordinates: </b>{position.lat.toPrecision(8) + ', ' + position.lng.toPrecision(8)}</p>
+          <p><b>accuracy: </b>{position.acc + 'm'}</p>
+          <p><b>altitude: </b>{position.alt}</p>
+          <p><b>speed: </b>{position.s}</p>
+          <p><b>time: </b>{time.toTimeString()}</p>
+          <h3> POINTS </h3>
+        </div>
         <button className="big-btn" id="add-point-btn" onClick={this.props.onAddPosition} >add new point</button>
         <button className="big-btn" id="save-points-btn" onClick={this.props.onSavePoints}>save all</button>
         <button className="big-btn" id="mail-points-btn" onClick={this.props.onMailPoints}>mail all</button>

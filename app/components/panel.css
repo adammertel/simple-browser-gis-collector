@@ -10,3 +10,8 @@
   padding-left: 2%;
   padding-top: 2%;
 }
+
+#actual-position p{
+  margin-top: 0px;
+  margin-bottom: 2px
+}

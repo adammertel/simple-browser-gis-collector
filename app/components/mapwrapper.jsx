@@ -10,14 +10,13 @@ export default class MapWrapper extends React.Component {
     this.state = {
       lat: 48.13,
       lng: 16.28,
-      zoom: 19
+      zoom: 18
     };
   }
 
   render() {
-    console.log('map render')
+    console.log('map renders');
 
-    const position = [this.state.latitude, this.state.lng];
     let pos = this.props.position
     return (
       <Map center={[pos.lat, pos.lng]} zoom={this.state.zoom}>
@@ -48,7 +47,10 @@ export default class MapWrapper extends React.Component {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
-        <Circle radius={parseInt(pos.acc) || 0} center={[pos.lat, pos.lng]} fillColor={'red'} color={'black'} weight={1} fillOpacity={0.8} />
+        {
+          parseInt(pos.acc) < 50 &&
+          <Circle radius={parseInt(pos.acc) || 50} center={[pos.lat, pos.lng]} fillColor={'red'} color={'black'} weight={1} fillOpacity={0.8} />
+        }
         {
           this.props.points.map(function(point, pi) {
             return (<Circle radius={10} key={'p' + pi} center={point.geometry.coordinates} fillColor={'orange'} fillOpacity={1} weight={1} color={'black'} />)
