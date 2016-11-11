@@ -7,21 +7,16 @@ export default class PositionPanel extends React.Component {
   }
 
   render() {
-    let position = this.props.position;
-    console.log(position)
-    let time = new Date(position.time);
-
     return (
       <div id="position-panel">
-        <h4> ACTUAL POSITION </h4>
-        <dl className="dl-horizontal">
-          <dt>coordinates: </dt><dd>{position.lat.toPrecision(8) + ', ' + position.lng.toPrecision(8)}</dd>
-          <dt>accuracy: </dt><dd>{position.acc + 'm'}</dd>
-          <dt>altitude: </dt><dd>{position.alt}</dd>
-          <dt>speed: </dt><dd>{position.s}</dd>
-          <dt>time: </dt><dd>{time.toTimeString()}</dd>
-        </dl>
-      </div>
+        <div className="container" >
+
+              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#actual-position-modal">actual position</button>
+
+              <button type="button" className="btn btn-primary" id="clear-storage-btn" onClick={this.props.onClearStorage}>clear storage</button>
+            </div>
+
+        </div>
     );
   }
 }

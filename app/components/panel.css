@@ -1,49 +1,18 @@
 #panel {
   background-color: grey;
-  position: absolute;
-  width: 90%;
-  height: 150px;
-  top: 0px;
-  left: 0px;
-  z-index: 9999;
+  width: 100%;
   opacity: 0.92;
-  padding: 2%;
-  margin: 2%;
   font-size: 12px;
 }
 
-.panel-column {
-  display: inline-table;
-  width: 30%;
-}
-
-.table-wrapper {
-  overflow-y: scroll;
-  height: 100px;
-  width: 77%;
-}
-
-#panel h2 {
-  margin-top: 0px
+#panel h4 {
+  display: inline
 }
 
 #panel th {
   border-bottom: 1px solid black
 }
 
-
 #panel p {
   margin: 0px;
-}
-
-#online-text {
-  color: white
-}
-
-#online-text.online {
-  text-shadow: -3px 0 green, 0 3px green, 3px 0 green, 0 -3px green
-}
-
-#online-text.offline {
-  text-shadow: -3px 0 red, 0 3px red, 3px 0 red, 0 -3px red
 }

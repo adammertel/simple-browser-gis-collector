@@ -1,4 +1,5 @@
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="main.css">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
@@ -8,5 +9,33 @@
   <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
   <body>
     <script type="text/javascript" src="bundle.js"></script>
+    <script>
+      window.onresize = displayWindowSize;
+      window.onload = displayWindowSize;
+
+      function displayWindowSize() {
+        console.log('resize')
+      	var myWidth = window.innerWidth;
+      	var myHeight = window.innerHeight;
+
+      	// ----------------------------------------------------- //
+      	// variables
+      	var panelHeight = 110;
+      	var posPanelHeight = 50;
+      	var footerHeight = 0;
+      	// ----------------------------------------------------- //
+
+      	var bannerHeight = panelHeight + posPanelHeight + footerHeight ;
+
+      	//document.getElementById("container").setAttribute("style","background-color:yellow;height:100vh;width:100vw;");
+        document.getElementById("panel").setAttribute("style","height:"+panelHeight+"px;");
+      	document.getElementById("position-panel").setAttribute("style","height:"+posPanelHeight+"px;");
+      	//document.getElementById("footer").setAttribute("style","height:"+footerHeight+"px;");
+
+      	var mapHeight = myHeight - bannerHeight;
+
+      	document.getElementById("map").setAttribute("style","height:"+mapHeight+"px;width:"+myWidth+"px;");
+      }
+    </script>
   </body>
 </html>

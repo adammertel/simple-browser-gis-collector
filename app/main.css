@@ -1,21 +1,26 @@
-.big-btn {
-    padding: 10px;
-    margin-right: 4px;
-    font-size: 15px;
-    border: 0px solid;
-    color: white;
-    font-weight: bold;
-    background-color: blue;
-    font-family: 'PT Sans Narrow', sans-serif;
+button {
+ margin: 2px 6px;
 }
 
-.sm-btn {
-    padding: 10px;
-    margin-right: 2px;
-    font-size: 10px;
-    border: 0px solid;
-    color: white;
-    font-weight: bold;
-    background-color: dodgerblue;
-    font-family: 'PT Sans Narrow', sans-serif;
+#online-text {
+  color: white;
+  position: absolute;
+  bottom: 15px;
+  right: 5px;
+  z-index: 9999;
 }
+
+#online-text.online {
+  text-shadow: -3px 0 green, 0 3px green, 3px 0 green, 0 -3px green
+}
+
+#online-text.offline {
+  text-shadow: -3px 0 red, 0 3px red, 3px 0 red, 0 -3px red
+}
+
+.container {
+  padding-top: 5px
+}
+
+dt, dd { float: left }
+dt { clear:both }
