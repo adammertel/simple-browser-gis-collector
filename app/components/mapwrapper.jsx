@@ -17,10 +17,15 @@ export default class MapWrapper extends React.Component {
   render() {
     console.log('map renders');
 
-    let pos = this.props.position
+    let pos = this.props.position;
+    let mapCenter = [48.13, 16.28]
+    if (pos) {
+      mapCenter = [pos.lat, pos.lng];
+    }
+    console.log(mapCenter)
     return (
       <div id="map">
-        <Map center={[pos.lat, pos.lng]} zoom={this.state.zoom}>
+        <Map center={mapCenter} zoom={this.state.zoom}>
           <ZoomControl position='bottomleft' />
           <LayersControl position='bottomleft'>
             <LayersControl.BaseLayer name='OpenStreetMap' >
@@ -50,7 +55,7 @@ export default class MapWrapper extends React.Component {
             </LayersControl.BaseLayer>
           </LayersControl>
           {
-            parseInt(pos.acc) < 50 &&
+            pos &&
             <Circle radius={parseInt(pos.acc) || 50} center={[pos.lat, pos.lng]} fillColor={'red'} color={'black'} weight={1} fillOpacity={0.8} />
           }
           {

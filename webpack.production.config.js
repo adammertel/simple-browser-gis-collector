@@ -23,6 +23,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx'],
   },
   plugins: [
+    new webpack.BannerPlugin("Adam Mertel, Univie https://carto.univie.ac.at/")
     new webpack.optimize.DedupePlugin(),
     new uglifyJsPlugin({
       compress: {

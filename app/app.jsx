@@ -16,10 +16,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      position: {
-        lat: 48.13,
-        lng: 16.28
-      },
+      position: false,
       tracking: false,
       online: true
     };
@@ -73,17 +70,19 @@ export default class App extends React.Component {
 
     self = this;
     navigator.geolocation.watchPosition(function(gl) {
+      //alert(gl.coords.longitude);
       self.positionChanged({
-          'time': gl.timestamp,
-          'acc': gl.coords.accuracy,
-          'alt': gl.coords.altitude,
-          'altacc': gl.coords.altitudeAccuracy,
-          'h': gl.coords.heading,
-          'lat': gl.coords.latitude,
-          'lng': gl.coords.longitude,
-          's': gl.coords.speed,
-        })
+        'time': gl.timestamp,
+        'acc': gl.coords.accuracy,
+        'alt': gl.coords.altitude,
+        'altacc': gl.coords.altitudeAccuracy,
+        'h': gl.coords.heading,
+        'lat': gl.coords.latitude,
+        'lng': gl.coords.longitude,
+        's': gl.coords.speed,
+      })
     }, function(err) {
+      //alert('ERROR(' + err.code + '): ' + err.message)
       console.warn('ERROR(' + err.code + '): ' + err.message);
     }, options);
 
@@ -361,13 +360,16 @@ export default class App extends React.Component {
               <div className="modal-body">
                 <div className="container" >
                   <strong> ACTUAL POSITION </strong>
+                  {
+                  position &&
                   <dl className="dl-horizontal">
-                    <dt>coordinates: </dt><dd>{position.lat.toPrecision(6) + ', ' + position.lng.toPrecision(6)}</dd>
+                    <dt>coordinates: </dt><dd>{position.lat.toPrecision(6)+ ', ' + position.lng.toPrecision(6)}</dd>
                     <dt>accuracy: </dt><dd>{position.acc + 'm'}</dd>
                     <dt>altitude: </dt><dd>{position.alt}</dd>
                     <dt>speed: </dt><dd>{position.s}</dd>
                     <dt>time: </dt><dd>{time.toLocaleTimeString()}</dd>
                   </dl>
+                  }
                 </div>
               </div>
               <div className="modal-footer">
@@ -399,7 +401,7 @@ export default class App extends React.Component {
           tracks={tracksData}
         />
         {
-          this.props.online ?
+          this.state.online ?
           <strong id="online-text" className="online text-right">ONLINE</strong> :
           <strong id="online-text" className="offline text-right">OFFLINE</strong>
         }
