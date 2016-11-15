@@ -15,6 +15,18 @@ const EMPTYCOLLECTION = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.gpxOptions = {
+      creator: 'simple-browser-gis Adam Mertel | UNIVIE | togpx',
+      featureTitle: function (props) {
+        return props.label;
+      },
+      featureCoordTimes: function (feature) {
+        return feature.properties.time.map(function(tim, ti){
+          let timeP = new Date(tim);
+          return timeP.toUTCString()
+        })
+      }
+    }
     this.state = {
       position: false,
       tracking: false,
@@ -71,6 +83,7 @@ export default class App extends React.Component {
     self = this;
     navigator.geolocation.watchPosition(function(gl) {
       //alert(gl.coords.longitude);
+      console.log(gl)
       self.positionChanged({
         'time': gl.timestamp,
         'acc': gl.coords.accuracy,
@@ -114,6 +127,7 @@ export default class App extends React.Component {
     data.features.map(function (feature, fi) {
       if (feature.properties.active) {
         feature.geometry.coordinates.push(self.thisCoords());
+        feature.properties.time.push(self.timeValue());
       }
     })
 
@@ -140,7 +154,8 @@ export default class App extends React.Component {
         "type": "Feature",
         "properties": {
           label: trackName,
-          active: true
+          active: true,
+          time: [this.timeValue()]
         },
         "geometry": {
           "type": "LineString",
@@ -149,6 +164,10 @@ export default class App extends React.Component {
       }
     )
     this._setData(data);
+  }
+
+  timeValue () {
+    return new Date();
   }
 
   stopTracking () {
@@ -173,13 +192,15 @@ export default class App extends React.Component {
 
   addPosition () {
     let pointLabel = prompt('name of point');
+    let time = new Date();
 
     let data = this._clonedData();
     data.features.push(
       {
         "type": "Feature",
         "properties": {
-          label: pointLabel
+          label: pointLabel,
+          time: this.timeValue()
         },
         "geometry": {
           "type": "Point",
@@ -229,11 +250,32 @@ export default class App extends React.Component {
   }
 
   savePoints () {
-    this.download('points.gpx', togpx(this.geometryCollection(this.getPointsData())));
+    this.download('points.gpx', this.createGPX(this.geometryCollection(this.getPointsData())));
   }
 
   saveTracks () {
-    this.download('tracks.gpx', togpx(this.geometryCollection(this.getTracksData())));
+    this.download('tracks.gpx', this.createGPX(this.geometryCollection(this.getTracksData())));
+  }
+
+  createGPX (data) {
+
+    data.features.map( function (feature, fi) {
+      let coords = feature.geometry.coordinates;
+      if (feature.geometry.type == 'LineString') {
+        coords.map( function(coord, ci) {
+          data.features[fi].geometry.coordinates[ci] = [coords[ci][1], coords[ci][0]];
+        })
+      }
+      else if (feature.geometry.type == 'Point') {
+        data.features[fi].geometry.coordinates = [coords[1], coords[0]];
+      }
+    })
+
+    console.log(data);
+
+    return togpx(data, this.gpxOptions)
+    // turn xs and ys
+
   }
 
   download (filename, text) {
@@ -252,6 +294,8 @@ export default class App extends React.Component {
     this.forceUpdate();
   }
 
+
+  // mail functions are not working
   mailPoints () {
     this.mailTo(JSON.stringify(this.geometryCollection(this.getPointsData())));
   }

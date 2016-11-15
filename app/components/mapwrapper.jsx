@@ -22,7 +22,11 @@ export default class MapWrapper extends React.Component {
     if (pos) {
       mapCenter = [pos.lat, pos.lng];
     }
-    console.log(mapCenter)
+
+    // check accuracy is not so bad
+    if (pos.acc > 50) {
+      pos.acc = 50;
+    }
     return (
       <div id="map">
         <Map center={mapCenter} zoom={this.state.zoom}>
@@ -56,7 +60,7 @@ export default class MapWrapper extends React.Component {
           </LayersControl>
           {
             pos &&
-            <Circle radius={parseInt(pos.acc) || 50} center={[pos.lat, pos.lng]} fillColor={'red'} color={'black'} weight={1} fillOpacity={0.8} />
+            <Circle radius={parseInt(pos.acc) || 30} center={[pos.lat, pos.lng]} fillColor={'red'} color={'black'} weight={1} fillOpacity={0.8} />
           }
           {
             this.props.points.map(function(point, pi) {
